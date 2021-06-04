@@ -10,6 +10,21 @@
   "chromeWebSecurity": false,
   "defaultCommandTimeout": 30000,
   "ignoreTestFiles": [
+    "about.js",
+    "account.js",
+    "aex2-popups.js",
+    "aex2.js",
+    "amount-input.js",
+    "auth.js",
+    "generate.js",
+    "import.js",
+    "index.js",
+    "menu.js",
+    "names.js",
+    "networks.js",
+    "notifications.js",
+    "other.js",
+    "terms.js",
     "tip.js",
     "transaction-details.js"
   ]
