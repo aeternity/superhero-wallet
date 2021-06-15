@@ -267,6 +267,8 @@
       "notifications": "Notifications",
       "notification-settings": "Notification Preference",
       "names": "Names",
+      "name-auctions": "Name auctions",
+      "register-name": "Register name",
       "bidding": "Bidding",
       "more": "More",
       "networks": "Networks",
@@ -515,27 +517,25 @@
       "pointer-added": "Name {type} successful!",
       "pending-claim": "Pending",
       "auto-extend": "Autoextend",
+      "tabs": [
+        "My names",
+        "Auctions",
+        "Register"
+      ],
       "list": {
         "default-name": "Default name",
         "default-make": "Make default",
         "valid-identifier-error": "Enter valid ae blockchain identifier",
-        "no-names": "No names found",
-        "button": "Your names",
+        "no-names": "There are no .chain names owned by this account. Would you like to register one?",
+        "register-name": "Register .chain name",
         "autoextend-confirm-title": "Autoextend name",
         "autoextend-confirm-msg": "In order to encourage the active usage of .chain names their ownership is limited in time by default. Selecting the auto-extend option guarantees that you will not lose the ownership of a .chain name. Your .chain name will be auto-extended at the cost of a simple name update transaction (under a penny as you are taking advantage of the super-low transaction fees of aeternity blockchain).",
         "name-hash": "Name code",
         "pointers": "Pointers"
       },
       "details": {
-        "name": "Name",
-        "name-id": "Name ID",
-        "owner": "Owner",
         "created-height": "Created at height",
         "expires-height": "Expires at height",
-        "pointer": "Pointer #{id}",
-        "set-default": "Set as default name",
-        "extend": "Extend",
-        "cancel": "Cancel",
         "set-pointer": "Set pointer",
         "address-placeholder": "Enter ak_, ct_, ok_, ch_"
       },
