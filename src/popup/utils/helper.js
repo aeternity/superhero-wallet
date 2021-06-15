@@ -59,6 +59,8 @@ export const checkAddress = (value) => Crypto.isAddressValid(value, 'ak')
   || Crypto.isAddressValid(value, 'ct')
   || Crypto.isAddressValid(value, 'ok');
 
+export const checkAddressOrChannel = (value) => checkAddress(value) || Crypto.isAddressValid(value, 'ch');
+
 export const checkAensName = (value) => value.endsWith('.chain');
 
 export const getAddressByNameEntry = (nameEntry, pointer = 'account_pubkey') => ((nameEntry.pointers && nameEntry.pointers.find(({ key }) => key === pointer)) || {}).id;
