@@ -16,12 +16,7 @@
         :secondary="`(≈${blocksToRelativeTime(endHeight)})`"
       />
     </div>
-    <ButtonPlain
-      class="help"
-      @click="showHelp"
-    >
-      <HelpCircle class="icon" />
-    </ButtonPlain>
+    <HintButton class="help" />
   </div>
 </template>
 
@@ -29,8 +24,7 @@
 import Avatar from './Avatar';
 import DetailsItem from './DetailsItem';
 import TokenAmount from './TokenAmount';
-import ButtonPlain from './ButtonPlain';
-import HelpCircle from '../../../icons/help-circle.svg?vue-component';
+import HintButton from './HintButton';
 import { blocksToRelativeTime } from '../../../filters/toRelativeTime';
 
 export default {
@@ -38,8 +32,7 @@ export default {
     Avatar,
     DetailsItem,
     TokenAmount,
-    ButtonPlain,
-    HelpCircle,
+    HintButton,
   },
   props: {
     name: { type: String, required: true },
@@ -47,9 +40,6 @@ export default {
     endHeight: { type: Number, required: true },
   },
   methods: {
-    showHelp() {
-      // TODO: show auctions and bidding modal
-    },
     blocksToRelativeTime,
   },
 };
@@ -113,12 +103,6 @@ export default {
     position: absolute;
     right: 16px;
     top: 16px;
-
-    .icon {
-      width: 24px;
-      height: 24px;
-      color: variables.$color-blue;
-    }
   }
 }
 </style>
