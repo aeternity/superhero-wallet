@@ -4,41 +4,38 @@
     data-cy="balance-info"
   >
     <div class="balance-wrapper">
-      <div
-        class="balance-dropdown"
+      <Dropdown
+        v-if="tokenBalancesOptions.length && UNFINISHED_FEATURES"
+        :options="tokenBalancesOptions"
+        :method="changeToken"
         data-cy="tokens-dropdown"
       >
-        <Dropdown
-          v-if="tokenBalancesOptions.length && UNFINISHED_FEATURES"
-          :options="tokenBalancesOptions"
-          :method="changeToken"
-          :selected="currentToken"
-        />
-        <span class="display-value text-ellipsis">
-          {{ selectedToken ? selectedToken.convertedBalance : balances[idx].toFixed(2) }}
-        </span>
-        <span class="token-symbol">{{ !selectedToken ? $t('ae') : selectedToken.symbol }}</span>
-        <Arrow
-          v-if="UNFINISHED_FEATURES"
-          class="expand-arrow"
-        />
-      </div>
-      <div
+        <template slot="display">
+          <span class="display-value text-ellipsis">
+            {{ selectedToken ? selectedToken.convertedBalance : balances[idx].toFixed(2) }}
+          </span>
+          <span class="token-symbol">{{ !selectedToken ? $t('ae') : selectedToken.symbol }}</span>
+          <Arrow
+            v-if="UNFINISHED_FEATURES"
+            class="expand-arrow"
+          />
+        </template>
+      </Dropdown>
+      <Dropdown
         v-if="currentToken === 'default'"
-        class="currenciesgroup balance-dropdown"
+        :options="currenciesOptions"
+        :method="switchCurrency"
+        class="currenciesgroup"
         data-cy="currency-dropdown"
       >
-        <Dropdown
-          :options="currenciesOptions"
-          :method="switchCurrency"
-          :selected="current.currency"
-        />
-        <span class="approx-sign">~</span>
-        <span class="display-value text-ellipsis">{{
-          formatCurrency(balances[idx] * currentCurrencyRate)
-        }}</span>
-        <Arrow class="expand-arrow" />
-      </div>
+        <template slot="display">
+          <span class="approx-sign">~</span>
+          <span class="display-value text-ellipsis">
+            {{ formatCurrency(balances[idx] * currentCurrencyRate) }}
+          </span>
+          <Arrow class="expand-arrow" />
+        </template>
+      </Dropdown>
     </div>
   </div>
 </template>
@@ -115,46 +112,17 @@ export default {
 
 .balance-info {
   height: 55px;
-  margin-bottom: 15px;
   display: flex;
   color: variables.$color-white;
 
   .balance-wrapper {
     margin: 0 auto;
 
-    .balance-dropdown {
+    .dropdown {
       margin-top: 6px;
-      margin-left: auto;
-      position: relative;
-      width: max-content;
-
-      .dropdown {
-        position: absolute;
-
-        ::v-deep {
-          > div > button,
-          > div > button:active:not(:disabled) {
-            opacity: 0;
-          }
-
-          > div > button,
-          > div .list .ae-button {
-            @extend %face-sans-16-regular;
-          }
-        }
-      }
-
-      .token-symbol {
-        color: variables.$color-blue;
-
-        + .expand-arrow {
-          vertical-align: middle;
-        }
-      }
+      text-align: end;
 
       &.currenciesgroup {
-        margin-top: 6px;
-
         .approx-sign {
           margin-top: 3px;
           color: variables.$color-white;
@@ -162,6 +130,18 @@ export default {
 
         span {
           @extend %face-sans-16-regular;
+        }
+      }
+
+      ::v-deep .list .button-plain {
+        @extend %face-sans-16-regular;
+      }
+
+      .token-symbol {
+        color: variables.$color-blue;
+
+        + .expand-arrow {
+          vertical-align: middle;
         }
       }
 
