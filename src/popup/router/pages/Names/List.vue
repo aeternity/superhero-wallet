@@ -14,25 +14,21 @@
       v-else-if="loading"
       class="spinner"
     />
-    <template v-else>
-      <p>
-        {{ $t('pages.names.list.no-names') }}
-      </p>
-      <Button :to="{ name: 'name-claim' }">
-        {{ $t('pages.names.list.register-name') }}
-      </Button>
-    </template>
+    <RegisterName
+      v-else
+      :msg="$t('pages.names.list.no-names')"
+    />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import NameItem from '../../components/NameItem';
-import Button from '../../components/Button';
+import RegisterName from '../../components/RegisterName';
 import AnimatedSpinner from '../../../../icons/animated-spinner.svg?skip-optimize';
 
 export default {
-  components: { NameItem, Button, AnimatedSpinner },
+  components: { NameItem, AnimatedSpinner, RegisterName },
   data: () => ({ loading: false }),
   computed: {
     ...mapState('names', ['owned']),
@@ -73,18 +69,6 @@ export default {
     width: 56px;
     height: 56px;;
     margin: 72px auto 0 auto;
-  }
-
-  p {
-    text-align: center;
-    margin: 32px;
-    color: variables.$color-light-grey;
-
-    @extend %face-sans-15-medium;
-  }
-
-  > .button {
-    text-align: center;
   }
 }
 </style>

@@ -6,7 +6,10 @@
       v-model="searchTerm"
       :placeholder="$t('pages.transactions.search')"
     />
-    <TransactionFilters v-model="displayMode" />
+    <Filters
+      v-model="displayMode"
+      :filters="filters"
+    />
     <ul
       class="list"
       data-cy="list"
@@ -35,7 +38,7 @@ import { uniqBy } from 'lodash-es';
 import AccountInfo from '../components/AccountInfo';
 import BalanceInfo from '../components/BalanceInfo';
 import SearchBar from '../components/SearchBar';
-import TransactionFilters from '../components/TransactionFilters';
+import Filters from '../components/Filters';
 import TransactionItem from '../components/TransactionItem';
 import PendingTxs from '../components/PendingTxs';
 import { TXS_PER_PAGE } from '../../utils/constants';
@@ -45,7 +48,7 @@ export default {
     AccountInfo,
     BalanceInfo,
     SearchBar,
-    TransactionFilters,
+    Filters,
     TransactionItem,
     PendingTxs,
   },
@@ -54,8 +57,11 @@ export default {
       loading: false,
       transactions: [],
       page: 1,
-      displayMode: { latestFirst: true, type: 'all' },
+      displayMode: { rotated: true, filter: 'all', sort: 'date' },
       searchTerm: '',
+      filters: {
+        all: {}, sent: {}, received: {}, tips: {}, date: { rotated: true },
+      },
     };
   },
   computed: {
@@ -63,7 +69,7 @@ export default {
       filteredTransactions(state, { account: { address } }) {
         return this.transactions
           .filter((tr) => {
-            switch (this.displayMode.type) {
+            switch (this.displayMode.filter) {
               case 'all':
                 return true;
               case 'sent':
@@ -73,7 +79,7 @@ export default {
               case 'tips':
                 return (tr.tx.type === 'ContractCallTx' && tr.tx.callerId === address) || tr.claim;
               default:
-                throw new Error(`Unknown display mode type: ${this.displayMode.type}`);
+                throw new Error(`Unknown display mode type: ${this.displayMode.filter}`);
             }
           })
           .filter(
@@ -84,7 +90,7 @@ export default {
           )
           .sort((a, b) => {
             const arr = [a, b].map((e) => new Date(e.microTime));
-            if (this.displayMode.latestFirst) arr.reverse();
+            if (this.displayMode.rotated) arr.reverse();
             return arr[0] - arr[1];
           });
       },

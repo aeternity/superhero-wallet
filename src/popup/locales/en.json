@@ -195,6 +195,16 @@
       "msg": "Name pointers associate your .chain name with one of:{0}{0}• Account address;{0}• Oracle ID;{0}• Channel ID;{0}• Contract ID.{0}{0}Your .chain name may have more than one pointer. However it can be associated with only one of each type of pointers listed above."
     }
   },
+  "filters": {
+    "all": "All",
+    "sent": "Sent",
+    "received": "Received",
+    "date": "Date",
+    "tips": "Tips",
+    "bid": "Bid",
+    "soonest": "Ending soon",
+    "length": "Name length"
+  },
   "transaction": {
     "type": {
       "spendTx": "Spend",
@@ -554,8 +564,8 @@
         "soonest": "Soonest",
         "length": "Name length",
         "bid": "Bid",
-        "expires": "Expires",
-        "no-auctions": "No auctions",
+        "expires": "Ends",
+        "no-auctions": "There are no .chain names for auction at the moment. Would you like to register one?",
         "not-found": "Not found",
         "current-bid": "Current bid",
         "previous-bids": "Previous bids",
@@ -904,7 +914,6 @@
     },
     "transactionDetails": {
       "heading": "Transactions Details",
-      "date": "Date",
       "type": "Type",
       "amount": "Amount",
       "fee": "Tx fee",
@@ -939,15 +948,11 @@
       "pointerId": "Pointer Id",
       "pointerKey": "Pointer Key",
       "moreInfo": "More Info",
-      "sent": "Sent",
-      "all": "All",
       "hash": "Hash",
       "status": "Status",
       "pending": "Pending",
       "tipUrl": "Tipped URL",
-      "timestamp": "Timestamp",
-      "received": "Received",
-      "tips": "Tips"
+      "timestamp": "Timestamp"
     },
     "transactions": {
       "backToAccount": "Back to account",
