@@ -22,7 +22,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import TxHistory from '../../../icons/tx-history.svg?vue-component';
+import TxHistory from '../../../icons/history.svg?vue-component';
 import TransactionList from './TransactionList';
 
 export default {
