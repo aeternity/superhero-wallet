@@ -62,6 +62,7 @@ export default new Vuex.Store({
     accs: [{
       idx: 0, color: '#1161FE', shift: 0, showed: true,
     }],
+    cardMinified: false,
   },
   getters,
   mutations,
