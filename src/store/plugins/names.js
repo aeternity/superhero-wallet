@@ -12,6 +12,7 @@ export default (store) => {
     state: {
       owned: [],
       defaults: {},
+      names: {},
     },
     getters: {
       getDefault: ({ defaults }, getters, { sdk }, { activeNetwork }) => (address) => {
@@ -20,7 +21,12 @@ export default (store) => {
         if (sdk) networkId = sdk.getNetworkId();
         return defaults[`${address}-${networkId}`];
       },
-      getName: ({ owned }) => (name) => owned.find((n) => n.name === name),
+      getOwnedName: ({ owned }) => (name) => owned.find((n) => n.name === name),
+      getName: ({ names }, { getDefault }, _, { account, activeNetwork }) => (address) => {
+        if (account.address === address) return getDefault(address);
+        store.dispatch('names/fetchName', address);
+        return names[`${address}-${activeNetwork.networkId}`] || '';
+      },
     },
     mutations: {
       set(state, names) {
@@ -34,6 +40,11 @@ export default (store) => {
       setAutoExtend(state, { name, value }) {
         const index = state.owned.findIndex((n) => n.name === name);
         Vue.set(state.owned[index], 'autoExtend', value);
+      },
+      setName({ names }, { address, name }) {
+        const networkId = store.state.sdk.getNetworkId();
+        if (name) Vue.set(names, `${address}-${networkId}`, name);
+        else Vue.delete(names, `${address}-${networkId}`);
       },
     },
     actions: {
@@ -68,6 +79,27 @@ export default (store) => {
         ).then((arr) => arr.flat(2));
 
         commit('set', names);
+      },
+      async fetchName({
+        rootState: { middleware },
+        rootGetters: { activeNetwork },
+        commit,
+      }, address) {
+        if (!middleware) return;
+        const [names, { preferredChainName }] = await Promise.all([
+          middleware.getOwnedBy(address),
+          fetchJson(`${activeNetwork.backendUrl}/profile/${address}`).catch(() => ({})),
+        ]);
+        if (names.active.length) {
+          const claimed = names.active.filter((n) => !n.pending).map(({ name }) => name);
+          if (!claimed.length) {
+            commit('setName', { address });
+          } else if (claimed.includes(preferredChainName)) {
+            commit('setName', { address, name: preferredChainName });
+          } else {
+            commit('setName', { address, name: claimed[0] });
+          }
+        }
       },
       async fetchAuctions({ rootState: { middleware } }) {
         if (!middleware) return [];
