@@ -9,15 +9,10 @@ export default async (store) => {
           store.dispatch('router/push', { name: 'success-tip', params: { amount, tipUrl } });
           break;
         case 'spend':
-          store.dispatch('router/push', {
-            name: 'payments-send',
-            params: { redirectstep: 3, successtx: transaction },
-          });
-          break;
         case 'spendToken':
-          store.dispatch('router/push', {
-            name: 'payments-send',
-            params: { redirectstep: 3, successtx: { ...transaction, amount, recipientId } },
+          store.dispatch('modals/open', {
+            name: 'spend-success',
+            transaction: { ...transaction, ...type === 'spendToken' ? { tx: { ...transaction.tx, recipientId, amount } } : {} },
           });
           break;
         default:

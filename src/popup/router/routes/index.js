@@ -267,7 +267,6 @@ export default [
       props: true,
       meta: {
         title: 'payments',
-        notRebrand: true,
       },
     }, {
       path: 'receive',

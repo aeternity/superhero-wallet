@@ -146,7 +146,9 @@ export default (store) => {
       async getAddress({ rootState: { middleware } }, id) {
         if (checkAddress(id)) return id;
         if (checkAensName(id)) {
-          const { info: nameEntry } = await middleware.getNameById(id);
+          const { info: nameEntry } = await middleware.getNameById(id)
+            .catch(() => ({ info: null }));
+          if (!nameEntry) return '';
           return nameEntry.pointers?.accountPubkey;
         }
         return '';

@@ -1,21 +1,22 @@
 <template>
   <div class="input-field">
-    <label
-      v-if="label"
-      class="label"
-    >
+    <label class="label">
       {{ label }}
+      <slot name="label" />
     </label>
     <div
-      :class="{ error }"
+      :class="{ error, warning }"
       class="wrapper"
       data-cy="input-wrapper"
     >
       <slot
-        v-if="!error"
+        v-if="!error && !warning"
         name="left"
       />
-      <Error v-else />
+      <StatusIcon
+        v-else
+        :status="error && 'error' || warning && 'warning'"
+      />
       <input
         :type="type"
         class="input"
@@ -29,23 +30,25 @@
       <slot name="right" />
     </div>
     <div
-      v-if="error && errorMessage"
-      class="error-message"
+      v-if="error && errorMessage || warning && warningMessage"
+      :class="['message', { error, warning }]"
     >
-      {{ errorMessage }}
+      {{ error ? errorMessage : warningMessage }}
     </div>
   </div>
 </template>
 
 <script>
-import Error from '../../../icons/error.svg?vue-component';
+import StatusIcon from './StatusIcon';
 
 export default {
-  components: { Error },
+  components: { StatusIcon },
   props: {
     value: { type: [String, Number], default: null },
     error: Boolean,
     errorMessage: { type: String, default: '' },
+    warning: Boolean,
+    warningMessage: { type: String, default: '' },
     placeholder: { type: String, default: '' },
     type: { type: String, default: 'text' },
     label: { type: String, default: '' },
@@ -89,6 +92,10 @@ export default {
       border-color: variables.$color-error;
     }
 
+    &.warning {
+      border-color: variables.$color-warning;
+    }
+
     ::v-deep svg {
       width: 24px;
       height: 24px;
@@ -111,6 +118,12 @@ export default {
 
       color: variables.$color-light-grey;
 
+      &::placeholder {
+        @extend %face-sans-14-regular;
+
+        color: variables.$color-dark-grey;
+      }
+
       &[type='number'] {
         -moz-appearance: textfield;
       }
@@ -122,13 +135,20 @@ export default {
     }
   }
 
-  .error-message {
+  .message {
     margin-top: 9px;
 
     @extend %face-sans-12-regular;
 
     text-align: left;
-    color: variables.$color-error;
+
+    &.error {
+      color: variables.$color-error;
+    }
+
+    &.warning {
+      color: variables.$color-warning;
+    }
   }
 }
 </style>

@@ -9,7 +9,7 @@
     >
     <span
       class="checkmark"
-      :class="{ checked: value, disabled }"
+      :class="[type, { checked: value, disabled }]"
     />
     <slot class="checkbox-holder" />
   </label>
@@ -71,6 +71,15 @@ export default {
 
       &.disabled {
         filter: brightness(0.8);
+      }
+    }
+
+    &.radio {
+      margin-right: 10px;
+      border-radius: 50%;
+
+      &.checked {
+        background-image: url('../../../icons/checkbox-radio-checked.svg');
       }
     }
   }

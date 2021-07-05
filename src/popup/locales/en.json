@@ -646,7 +646,7 @@
     },
     "receive": {
       "backToAccount": "Back to account",
-      "heading": "To receive tokens, provide this address or have the payor scan the QR code below.",
+      "heading": "To receive tokens, provide either your .chain name or your account address or have the payor scan the QR code below.",
       "copy": "Copy",
       "transferExchange": "Swap crypto for AE tokens",
       "purchase": "Buy AE tokens"
@@ -703,22 +703,24 @@
       "seeTransactionExplorer": "See transaction in the explorer.",
       "scan": "Scan QR",
       "cancel": "Cancel",
-      "review": "Review",
+      "review": "Review and send",
       "reviewtx": "Review Transaction",
       "checkalert": "Please check the information carefully.",
       "sender": "Sending address",
       "recipient": "Receiving address",
       "amount": "Amount",
-      "editTxDetails": "Edit Transaction Details",
+      "editTxDetails": "Edit transaction",
       "tx-success": "Transaction Completed",
-      "successalert": "You have successfully sent ",
+      "successalert": "has been sent to",
       "to": "To",
       "from": "From",
       "hash": "Transaction Hash",
       "scanAddress": "Scan aeternity address",
       "error": "Invalid AE address or AENS name",
+      "same-address": "Sender and receiver address are the same. You will send tokens to our own account.",
       "error-name-send": "Unfortunately you can only send AEX-9 Tokens to an address",
-      "confirm-sending-to-same-account": "Are you sure you want to send tokens to your own address?"
+      "address-placeholder": "Enter recepient’s address or .chain name",
+      "address-error": "Enter valid blockchain address or .chain name"
     },
     "settings": {
       "backToAccount": "Back to account",

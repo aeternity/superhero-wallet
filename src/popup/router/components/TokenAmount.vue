@@ -8,6 +8,7 @@
     <span
       v-if="text"
       class="text"
+      data-cy="amount-currency"
     >{{ text }}</span>
   </span>
 </template>
@@ -27,16 +28,16 @@ export default {
       default: undefined,
     },
     large: { type: Boolean },
+    highPrecision: { type: Boolean },
   },
   computed: {
     amountRounded() {
-      return +this.amount.toFixed(this.amount < 0.01 ? 9 : 2);
+      return +this.amount.toFixed((this.highPrecision || this.amount < 0.01) ? 9 : 2);
     },
     ...mapState({
       amountFiat(state, { convertToCurrency, formatCurrency }) {
-        if (this.symbol !== 'AE') return false;
+        if (this.symbol !== 'AE' || this.hideFiat) return false;
         const converted = convertToCurrency(this.amount);
-        if (converted < 0.01 || this.hideFiat) return false;
         return formatCurrency(converted);
       },
     }),
