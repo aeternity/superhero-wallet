@@ -33,7 +33,7 @@ export default {
     RecentTransactions,
     AccountSwitcher,
   },
-  computed: mapState(['tourRunning', 'backedUpSeed']),
+  computed: mapState(['backedUpSeed']),
 };
 </script>
 
@@ -47,7 +47,17 @@ export default {
 
   .recent-transactions {
     margin-top: -10px;
-    flex-grow: 1;
+
+    ::v-deep {
+      .header {
+        height: 58px;
+        padding-top: calc(8px + 10px);
+      }
+
+      .body {
+        margin-top: calc(48px + 10px);
+      }
+    }
   }
 
   .seed-backup-notification {

@@ -6,41 +6,44 @@
     <div class="header">
       <span class="title">{{ $t('pages.recentTransactions.title') }}</span>
       <router-link
+        v-if="loading || transactions.latest.length || transactions.pending.length"
         to="/transactions"
         data-cy="view-all-transactions"
         class="view-all"
       >
-        <TxHistory class="icon" />
+        {{ $t('pages.recentTransactions.viewAll') }} <TxHistory class="icon" />
       </router-link>
     </div>
-    <PendingTxs />
-    <div
-      v-if="transactions.latest.length"
-      class="transaction-list"
-    >
-      <TransactionItem
-        v-for="transaction in transactions.latest.slice(0, limit)"
-        :key="transaction.hash"
-        :transaction="transaction"
+    <div class="body">
+      <PendingTxs />
+      <div
+        v-if="transactions.latest.length"
+        class="transaction-list"
+      >
+        <TransactionItem
+          v-for="transaction in transactions.latest.slice(0, limit)"
+          :key="transaction.hash"
+          :transaction="transaction"
+        />
+      </div>
+      <router-link
+        v-if="transactions.latest.length > 6"
+        to="/transactions"
+        class="view-more"
+      >
+        <Visible class="icon" />
+        <span class="text">{{ $t('pages.recentTransactions.viewMore') }}</span>
+      </router-link>
+      <AnimatedSpinner
+        v-if="loading"
+        class="spinner"
       />
-    </div>
-    <router-link
-      v-if="transactions.latest.length > 6"
-      to="/transactions"
-      class="view-more"
-    >
-      <Visible class="icon" />
-      <span class="text">{{ $t('pages.recentTransactions.viewMore') }}</span>
-    </router-link>
-    <AnimatedSpinner
-      v-if="loading"
-      class="spinner"
-    />
-    <div
-      v-else-if="!transactions.latest.length && !transactions.pending.length"
-      class="message"
-    >
-      <p>{{ $t('pages.recentTransactions.noTransactionsFound') }}</p>
+      <div
+        v-else-if="!transactions.latest.length && !transactions.pending.length"
+        class="message"
+      >
+        <p>{{ $t('pages.recentTransactions.noTransactionsFound') }}</p>
+      </div>
     </div>
   </div>
 </template>
@@ -105,7 +108,10 @@ export default {
   overflow-y: scroll;
 
   .header {
-    padding: 21px 16px 11px 16px;
+    height: 48px;
+    position: fixed;
+    width: 100%;
+    padding: 8px 16px 8px 16px;
     background: variables.$color-bg-2;
     border-radius: 0 0 4px 4px;
     display: flex;
@@ -119,104 +125,122 @@ export default {
     }
 
     .view-all {
-      width: 24px;
-      height: 24px;
-      padding: 0;
+      display: flex;
+      padding: 4px 8px;
+      border-radius: 16px;
+      align-items: center;
+      background: variables.$color-bg-1;
       cursor: pointer;
       text-decoration: none;
+      color: variables.$color-dark-grey;
+      transition: all 0.12s ease-out;
+
+      @extend %face-sans-15-medium;
 
       .icon {
-        fill: variables.$color-white;
+        margin-left: 4px;
+        width: 24px;
+        color: variables.$color-white;
         opacity: 0.7;
       }
 
-      &:hover .icon {
-        opacity: 1;
+      &:hover {
+        color: variables.$color-green;
+        background: rgba(0, 255, 157, 0.1);
 
-        path {
-          fill: variables.$color-green-hover;
+        .icon {
+          opacity: 1;
+          color: variables.$color-green-hover;
         }
       }
-    }
-  }
 
-  .transaction-list > div {
-    margin-bottom: 1px;
-  }
-
-  .message,
-  .spinner {
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-    padding-bottom: 8px;
-
-    @include mixins.desktop {
-      padding-bottom: 56px;
-    }
-  }
-
-  .message > p {
-    padding: 0 64px;
-
-    @extend %face-sans-15-medium;
-
-    color: variables.$color-light-grey;
-    text-align: center;
-  }
-
-  .spinner {
-    width: 56px;
-    height: 56px;
-    margin: 0 auto;
-    color: variables.$color-white;
-  }
-
-  .view-more {
-    padding: 12px 16px;
-    border-radius: 4px;
-    background: variables.$color-bg-1;
-    display: flex;
-    align-items: center;
-
-    .text {
-      @extend %face-sans-14-medium;
-
-      color: variables.$color-green;
-      padding-left: 4px;
-    }
-
-    .icon {
-      width: 24px;
-      height: 24px;
-      opacity: 0.7;
-    }
-
-    &:hover {
-      background: variables.$color-hover;
-
-      .text {
-        color: variables.$color-green-hover;
+      &:active {
+        opacity: 0.8;
       }
+    }
+  }
 
-      .icon {
-        opacity: 1;
+  .body {
+    margin-top: 48px;
 
-        path {
-          fill: variables.$color-green;
-        }
+    .transaction-list > div {
+      margin-bottom: 1px;
+    }
+
+    .message,
+    .spinner {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      padding-bottom: 8px;
+
+      @include mixins.desktop {
+        padding-bottom: 56px;
       }
     }
 
-    &:active {
+    .message > p {
+      padding: 0 64px;
+
+      @extend %face-sans-15-medium;
+
+      color: variables.$color-light-grey;
+      text-align: center;
+    }
+
+    .spinner {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto;
+      color: variables.$color-white;
+    }
+
+    .view-more {
+      padding: 12px 16px;
+      border-radius: 4px;
       background: variables.$color-bg-1;
+      display: flex;
+      align-items: center;
 
       .text {
-        opacity: 0.7;
+        @extend %face-sans-14-medium;
+
+        color: variables.$color-green;
+        padding-left: 4px;
       }
 
       .icon {
-        opacity: 0.44;
+        width: 24px;
+        height: 24px;
+        opacity: 0.7;
+      }
+
+      &:hover {
+        background: variables.$color-hover;
+
+        .text {
+          color: variables.$color-green-hover;
+        }
+
+        .icon {
+          opacity: 1;
+
+          path {
+            fill: variables.$color-green;
+          }
+        }
+      }
+
+      &:active {
+        background: variables.$color-bg-1;
+
+        .text {
+          opacity: 0.7;
+        }
+
+        .icon {
+          opacity: 0.44;
+        }
       }
     }
   }
