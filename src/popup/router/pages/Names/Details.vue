@@ -89,7 +89,7 @@ export default {
     ...mapState(['sdk']),
     ...mapGetters(['account']),
     nameEntry() {
-      return this.$store.getters['names/getName'](this.name);
+      return this.$store.getters['names/getOwnedName'](this.name);
     },
     validPointer() {
       return checkAensName(this.pointer) || checkAddress(this.pointer);
