@@ -12,6 +12,7 @@ export default (store) => {
     state: {
       owned: [],
       defaults: {},
+      auctions: {},
     },
     getters: {
       getDefault: ({ defaults }, getters, { sdk }, { activeNetwork }) => (address) => {
@@ -21,6 +22,9 @@ export default (store) => {
         return defaults[`${address}-${networkId}`];
       },
       getName: ({ owned }) => (name) => owned.find((n) => n.name === name),
+      getAuction: ({ auctions }) => (name) => auctions[name] || null,
+      getHighestBid: (_, { getAuction }) => (name) => getAuction(name)
+        && getAuction(name).bids.reduce((a, b) => (a.nameFee.isGreaterThan(b.nameFee) ? a : b)),
     },
     mutations: {
       set(state, names) {
@@ -34,6 +38,9 @@ export default (store) => {
       setAutoExtend(state, { name, value }) {
         const index = state.owned.findIndex((n) => n.name === name);
         Vue.set(state.owned[index], 'autoExtend', value);
+      },
+      setAuctionEntry(state, { name, expiration, bids }) {
+        state.auctions[name] = { expiration, bids };
       },
     },
     actions: {

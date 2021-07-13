@@ -22,7 +22,7 @@
   position: sticky;
   top: 48px;
   top: calc(48px + env(safe-area-inset-top));
-  z-index: 1;
+  z-index: 2;
 
   &.only-top,
   .top {
